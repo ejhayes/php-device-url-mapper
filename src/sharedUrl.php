@@ -39,6 +39,15 @@ class sharedUrl {
 		}
 	}
 	
+	function redirect($action=true){
+		if ($action){
+			header('Location: ' . $this->getUrl());
+		} else {
+			// return the string representation
+			return $this->getUrl();
+		}
+	}
+	
 	private function getBrowserType(){
 		$user_agent = $_SERVER["HTTP_USER_AGENT"];
 		

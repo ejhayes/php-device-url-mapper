@@ -117,5 +117,14 @@ class TestSharedUrl extends UnitTestCase {
 		$sharedUrl = new sharedUrl($test_input_multiple_url_invalid);
 	}
 	
+	function test_redirect_works(){
+		// not sure how to test this functionality???
+		$validUrl = "http://www.google.com";
+		$sharedUrl = new sharedUrl($validUrl);
+		
+		// NOTE: this way we can verify that redirect at least does something--without doing a header redirect
+		$this->assertEqual($sharedUrl->redirect(false),$validUrl);
+	}
+	
 }
 ?>
