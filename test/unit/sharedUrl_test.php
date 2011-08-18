@@ -23,11 +23,53 @@ class TestSharedUrl extends UnitTestCase {
 		
 		// tests may modify server behavior, make a backup of our agent
 		$this->currentAgent = $_SERVER["HTTP_USER_AGENT"];
+		
+		// add some items to the request scope for testing
+		$_REQUEST["item1"] = "value1";
+		$_REQUEST["item2"] = "value2";
 	}
 	
 	function tearDown(){
 		// restore the user agent, since it may have been tampered with
 		$_SERVER["HTTP_USER_AGENT"] = $this->currentAgent;
+	}
+	
+	function test_forward_keys_bad_input(){
+		// verify that specified keys are forwarded
+		$validUrl = "http://www.google.com";
+		
+		$invalidInput = "";
+		
+		$sharedUrl = new sharedUrl($validUrl);
+		
+		$this->expectException(new Exception("Keys must be an array"));
+		$sharedUrl->getUrlKeys($invalidInput);
+	}
+	
+	function test_nonexistent_key(){
+		// verify that specified keys are forwarded
+		$validUrl = "http://www.google.com";
+		
+		$invalidInput = array("item1","item3DNE"); // assumes that item3DNE does not exist!
+		$expectResult = $validUrl . "?item1=value1&";
+		
+		$sharedUrl = new sharedUrl($validUrl);
+		
+		$this->assertEqual($sharedUrl->getUrlKeys($invalidInput), $expectResult);
+	}
+	
+	function test_forwards_keys(){
+		// verify that specified keys are forwarded
+		$validUrl = "http://www.google.com";
+		
+		$keysToForward = array(
+			"item1",
+			"item2"
+		);
+		
+		$sharedUrl = new sharedUrl($validUrl);
+		
+		$this->assertEqual($sharedUrl->getUrlKeys($keysToForward), $validUrl . "?item1=value1&item2=value2&");
 	}
 	
 	function test_returns_desktop(){
@@ -144,6 +186,22 @@ class TestSharedUrl extends UnitTestCase {
 		
 		// NOTE: this way we can verify that redirect at least does something--without doing a header redirect
 		$this->assertEqual($sharedUrl->redirect(false),$validUrl);
+	}
+	
+	function test_redirect_keys_works(){
+		// not sure how to test this functionality???
+		$validUrl = "http://www.google.com";
+		$validOutput = $validUrl . "?item1=value1&item2=value2&";
+		
+		$sharedUrl = new sharedUrl($validUrl);
+		
+		$keysToTest = array(
+			"item1",
+			"item2"
+		);
+		
+		// NOTE: this way we can verify that redirect at least does something--without doing a header redirect
+		$this->assertEqual($sharedUrl->redirectKeys($keysToTest, false), $validOutput);
 	}
 	
 }

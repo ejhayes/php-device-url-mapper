@@ -39,6 +39,29 @@ class sharedUrl {
 		}
 	}
 	
+	function getUrlKeys($keys){
+		if(!is_array($keys)){
+			throw new Exception("Keys must be an array");
+		}
+		
+		$appendString = "?";
+		
+		foreach($keys as $key){
+			if( array_key_exists($key, $_REQUEST) ){
+				$appendString .= $key . "=" . $_REQUEST[$key] ."&";
+			}
+		}
+		return $this->config[$this->getBrowserType()] . $appendString;
+	}
+	
+	function redirectKeys($keys, $action=true){
+		if ($action){
+			header('Location: ' . $this->getUrlKeys($keys));
+		} else {
+			return $this->getUrlKeys($keys);
+		}
+	}
+	
 	function redirect($action=true){
 		if ($action){
 			header('Location: ' . $this->getUrl());
