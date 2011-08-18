@@ -48,7 +48,7 @@ class sharedUrl {
 		}
 	}
 	
-	private function getBrowserType(){
+	function getBrowserType(){
 		$user_agent = $_SERVER["HTTP_USER_AGENT"];
 		
 		if( is_null($this->type) ){

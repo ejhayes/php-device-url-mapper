@@ -30,6 +30,26 @@ class TestSharedUrl extends UnitTestCase {
 		$_SERVER["HTTP_USER_AGENT"] = $this->currentAgent;
 	}
 	
+	function test_returns_desktop(){
+		$test_configuration = "http://www.google.com";
+		
+		foreach($this->desktopAgents as $agent){
+			$_SERVER["HTTP_USER_AGENT"] = $agent;
+			$sharedUrl = new sharedUrl($test_configuration);
+			$this->assertEqual($sharedUrl->getBrowserType(), "desktop");
+		}
+	}
+	
+	function test_returns_mobile(){
+		$test_configuration = "http://www.google.com";
+		
+		foreach($this->mobileAgents as $agent){
+			$_SERVER["HTTP_USER_AGENT"] = $agent;
+			$sharedUrl = new sharedUrl($test_configuration);
+			$this->assertEqual($sharedUrl->getBrowserType(), "mobile");
+		}
+	}
+	
 	function test_returns_desktop_url(){
 		$mobileUrl = 'http://m.somesite.com';
 		$desktopUrl = 'http://somesite.com';

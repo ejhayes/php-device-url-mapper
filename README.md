@@ -54,3 +54,10 @@ Simple Case (also, the only one I have for now): Redirect a page based on the de
 	));
 	
 	$sharedUrl->redirect();
+	
+What am I using case
+====================
+If you just want to know what type of browser is viewing, then do this:
+
+	$sharedUrl = new sharedUrl("http://www.google.com");
+	$sharedUrl->getBrowserType(); // returns desktop or mobile
