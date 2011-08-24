@@ -54,16 +54,6 @@ Simple Case (also, the only one I have for now): Redirect a page based on the de
 	));
 	
 	$sharedUrl->redirect();
-	
-Key forwarding Case: Redirect to a page and preserve the keys (currently only GET scoped)
------------------------------------------------------------------------------------------
-
-	$sharedUrl = new sharedUrl(array(
-		"desktop" => "http://www.google.com",
-		"mobile" => "http://m.google.com"
-	));
-
-	$sharedUrl->redirectKeys(array("item1", "item2")); // items 1 and 2 will be forwarded if they exist
 
 What am I using case
 ====================
